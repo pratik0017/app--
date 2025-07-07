@@ -231,12 +231,11 @@ export default function WebCall() {
     };
 
     useEffect(() => {
-        return () => {
-            if (isInRoom) {
-                handleLeaveRoom();
-            }
-        };
-    }, [isInRoom]);
+    // When in room and localStreamRef is set, always assign stream to video element
+    if (isInRoom && localStreamRef.current && localVideoRef.current) {
+        localVideoRef.current.srcObject = localStreamRef.current;
+    }
+    }, [isInRoom, localStreamRef.current]);
 
     // --- Render Logic ---
     if (!isInRoom) {
